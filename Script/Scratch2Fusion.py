@@ -10,7 +10,7 @@ Each clip is created as a Loader node in Fusion. The filename, tile color, and c
 
 # Changelog
 
-Updated the Python scripts to support Python v3.6 - 3.15+ by switching to the importlib Python module. This solves an issue where the Resolve API's previously recommended Python "imp" module usage that was depreciated at Python v3.11.
+Updated the Python scripts to support Python v3.6 - 3.15+ by switching to the importlib Python module. This solves an issue where the Fusion Studio API's previously recommended Python "imp" module usage that was depreciated at Python v3.11.
 
 # Script Installation:
 
@@ -114,16 +114,16 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 def FuScriptLib():
 	lib_path = ""
 	if sys.platform.startswith("darwin"):
-		lib_path = "/Applications/DaVinci Resolve/DaVinci Resolve.app/Contents/Libraries/Fusion/fusionscript.so"
-		#lib_path = "/Applications/Blackmagic Fusion 21/Fusion.app/Contents/MacOS/fusionscript.so"
+		#lib_path = "/Applications/DaVinci Resolve/DaVinci Resolve.app/Contents/Libraries/Fusion/fusionscript.so"
+		lib_path = "/Applications/Blackmagic Fusion 21/Fusion.app/Contents/MacOS/fusionscript.so"
 		#lib_path = /Applications/Blackmagic Fusion 21 Render Node/Fusion Render Node.app/Contents/MacOS/fusionscript.so
 	elif sys.platform.startswith("win"):
-		lib_path = "C:\\Program Files\\Blackmagic Design\\DaVinci Resolve\\fusionscript.dll"
-		#lib_path = "C:\\Program Files\\Blackmagic Design\\Fusion 21\\fusionscript.dll"
+		#lib_path = "C:\\Program Files\\Blackmagic Design\\DaVinci Resolve\\fusionscript.dll"
+		lib_path = "C:\\Program Files\\Blackmagic Design\\Fusion 21\\fusionscript.dll"
 		#lib_path = "C:\\Program Files\\Blackmagic Design\\Fusion Render Node 21\\fusionscript.dll"
 	elif sys.platform.startswith("linux"):
-		lib_path = "/opt/resolve/libs/Fusion/fusionscript.so"
-		#lib_path = "/opt/BlackmagicDesign/Fusion21/fusionscript.so"
+		#lib_path = "/opt/resolve/libs/Fusion/fusionscript.so"
+		lib_path = "/opt/BlackmagicDesign/Fusion21/fusionscript.so"
 		#lib_path = "/opt/BlackmagicDesign/FusionRenderNode21/fusionscript.so"
 
 	if not os.path.isfile(lib_path):
@@ -138,23 +138,15 @@ def FuScriptLib():
 			sys.modules[__name__] = bmd
 			return bmd
 		else:
-			raise ImportError("[Resolve Studio] Could not locate module dependencies")
+			raise ImportError("[Fusion Studio] Could not locate module dependencies")
 	else:
-		raise ImportError("[Resolve Studio] Could not access the importlib spec loader dependencies")
-
-def Resolve():
-	app = FuScriptLib().scriptapp("Resolve")
-	return app
+		raise ImportError("[Fusion Studio] Could not access the importlib spec loader dependencies")
 
 def Fusion():
 	app = FuScriptLib().scriptapp("Fusion")
 	return app
 
-# Get the Resolve and Fusion objects
-resolve = Resolve()
-res = resolve
-app = resolve
-
+# Get the Fusion objects
 fu = Fusion()
 fusion = fu
 
