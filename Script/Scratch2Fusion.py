@@ -1,12 +1,16 @@
 #!/usr/bin/env python3
 '''
-Scratch to Fusion - 2024-04-08 01.39 PM
+Scratch to Fusion - 2026-09-06 12.52 PM
 By Andrew Hazelden <andrew@andrewhazelden.com>
 
 # Overview:
 This script imports Assimilate Scratch/LiveFX content into BMD Fusion Studio.
 
 Each clip is created as a Loader node in Fusion. The filename, tile color, and comment attributes are assigned to each node.
+
+# Changelog
+
+Updated the Python scripts to support Python v3.6 - 3.15+ by switching to the importlib Python module. This solves an issue where the Resolve API's previously recommended Python "imp" module usage that was depreciated at Python v3.11.
 
 # Script Installation:
 
@@ -98,44 +102,62 @@ The original "s2nuke_v9.py" script was provided with the following license terms
 '''
 
 import xml.etree.ElementTree as ET
-import sys, os, argparse, json, re, glob, platform
+import sys, os, re, csv, datetime, math, json, argparse, glob, platform
+
+# Supports Python v3.6 to 3.15+
+import importlib.machinery, importlib.util
+from pprint import pprint
 
 import warnings
-warnings.filterwarnings('ignore', category=DeprecationWarning)
-
-# The imp library will be depreciated in Python 3.12. Look for a replacement option at that time.
-import imp
+warnings.filterwarnings("ignore", category=DeprecationWarning)
 
 def FuScriptLib():
-	lib_path = ''
-	if sys.platform.startswith('darwin'):
-		lib_path = '/Applications/Blackmagic Fusion 18/Fusion.app/Contents/Libraries/fusionscript.so'
-	elif sys.platform.startswith('win'):
-		lib_path = 'C:\\Program Files\\Blackmagic Design\\Fusion 18\\fusionscript.dll'
-	elif sys.platform.startswith('linux'):
-		lib_path = '/opt/BlackmagicDesign/Fusion18/fusionscript.so'
+	lib_path = ""
+	if sys.platform.startswith("darwin"):
+		lib_path = "/Applications/DaVinci Resolve/DaVinci Resolve.app/Contents/Libraries/Fusion/fusionscript.so"
+		#lib_path = "/Applications/Blackmagic Fusion 21/Fusion.app/Contents/MacOS/fusionscript.so"
+		#lib_path = /Applications/Blackmagic Fusion 21 Render Node/Fusion Render Node.app/Contents/MacOS/fusionscript.so
+	elif sys.platform.startswith("win"):
+		lib_path = "C:\\Program Files\\Blackmagic Design\\DaVinci Resolve\\fusionscript.dll"
+		#lib_path = "C:\\Program Files\\Blackmagic Design\\Fusion 21\\fusionscript.dll"
+		#lib_path = "C:\\Program Files\\Blackmagic Design\\Fusion Render Node 21\\fusionscript.dll"
+	elif sys.platform.startswith("linux"):
+		lib_path = "/opt/resolve/libs/Fusion/fusionscript.so"
+		#lib_path = "/opt/BlackmagicDesign/Fusion21/fusionscript.so"
+		#lib_path = "/opt/BlackmagicDesign/FusionRenderNode21/fusionscript.so"
 
 	if not os.path.isfile(lib_path):
-		print('[Fusion Studio] [Library Does Not Exist on Disk]', lib_path)
+		print("[Fusion] [Library Does Not Exist on Disk]", lib_path)
 
-	bmd = imp.load_dynamic('fusionscript', lib_path)
-	if bmd:
-		sys.modules[__name__] = bmd
+	loader = importlib.machinery.ExtensionFileLoader("fusionscript", lib_path)
+	spec = importlib.util.spec_from_loader("fusionscript", loader)
+	if spec:
+		bmd = importlib.util.module_from_spec(spec)
+		loader.exec_module(bmd)
+		if bmd:
+			sys.modules[__name__] = bmd
+			return bmd
+		else:
+			raise ImportError("[Resolve Studio] Could not locate module dependencies")
 	else:
-		raise ImportError('[Fusion Studio] Could not locate module dependencies')
-	return bmd
+		raise ImportError("[Resolve Studio] Could not access the importlib spec loader dependencies")
 
 def Resolve():
-	app = FuScriptLib().scriptapp('Resolve')
+	app = FuScriptLib().scriptapp("Resolve")
 	return app
 
 def Fusion():
-	app = FuScriptLib().scriptapp('Fusion', 'localhost')
+	app = FuScriptLib().scriptapp("Fusion")
 	return app
 
-# Get the Fusion objects
+# Get the Resolve and Fusion objects
+resolve = Resolve()
+res = resolve
+app = resolve
+
 fu = Fusion()
-fusion = Fusion()
+fusion = fu
+
 bmd = FuScriptLib()
 
 # Connect to the current foreground comp

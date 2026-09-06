@@ -1,6 +1,7 @@
 # Scratch to Resolve
 
 Doc Created: 2024-04-08  
+Doc Updated: 2026-09-06  
 Doc By: Andrew Hazelden <andrew@andrewhazelden.com>  
 
 # Overview:
@@ -89,5 +90,7 @@ If you click on the "Resolve Studio" custom command button and see the command p
 
 If you click on the "Resolve Studio" custom command button and see the command prompt based error message "the following arguments are required: xml_path" it means you need to go back and adjust the custom command parameters. Change the "XML Export:" setting to "Selection".
 
+## Changelog
 
+Updated the Python scripts to support Python v3.6 - 3.15+ by switching to the importlib Python module. This solves an issue where the Resolve API's previously recommended Python "imp" module usage that was depreciated at Python v3.11.
 

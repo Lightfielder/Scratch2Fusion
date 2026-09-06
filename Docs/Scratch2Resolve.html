@@ -322,6 +322,7 @@ img {
 </head>
 <body><h1>Scratch to Resolve</h1>
 <p>Doc Created: 2024-04-08<br />
+Doc Updated: 2026-09-06<br />
 Doc By: Andrew Hazelden <a href="mailto:andrew@andrewhazelden.com">andrew@andrewhazelden.com</a></p>
 <h1>Overview:</h1>
 <p>This script imports Assimilate Scratch/LiveFX content into BMD Resolve Studio.</p>
@@ -389,5 +390,7 @@ Doc By: Andrew Hazelden <a href="mailto:andrew@andrewhazelden.com">andrew@andrew
 <p>The &quot;Scratch2Resolve-Win.bat&quot; script on Windows expects your Python 3 executable to be in the PATH environment variable, and to have the filename of &quot;python.exe&quot;. You can revise the script if your executable is named &quot;python3.exe&quot; or you want to use an absolute filepath.</p>
 <p>If you click on the &quot;Resolve Studio&quot; custom command button and see the command prompt based error message &quot;Could not connect to the foreground Resolve session&quot; it means the Fusion Render Node or Fusion Studio processes running on the same system intercepted the content that was being passed to Resolve Studio. Quit the Fusion Render Node/Fusion Studio processes and things should work as expected.</p>
 <p>If you click on the &quot;Resolve Studio&quot; custom command button and see the command prompt based error message &quot;the following arguments are required: xml_path&quot; it means you need to go back and adjust the custom command parameters. Change the &quot;XML Export:&quot; setting to &quot;Selection&quot;.</p>
+<h2>Changelog</h2>
+<p>Updated the Python scripts to support Python v3.6 - 3.15+ by switching to the importlib Python module. This solves an issue where the Resolve API's previously recommended Python "imp" module usage that was depreciated at Python v3.11.</p>
 </body>
 </html>
