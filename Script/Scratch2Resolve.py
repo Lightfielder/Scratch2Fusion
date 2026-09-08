@@ -1,6 +1,6 @@
 #!/usr/bin/env python3
 '''
-Scratch to Resolve - 2026-09-06 02.04 PM
+Scratch to Resolve - 2026-09-08 02.27 PM
 By Andrew Hazelden <andrew@andrewhazelden.com>
 
 # Overview:
@@ -119,11 +119,13 @@ warnings.filterwarnings("ignore", category=DeprecationWarning)
 def FuScriptLib():
 	lib_path = ""
 	if sys.platform.startswith("darwin"):
-		lib_path = "/Applications/DaVinci Resolve/DaVinci Resolve.app/Contents/Libraries/Fusion/fusionscript.so"
+		lib_path = "/Applications/DaVinci Resolve 21/DaVinci Resolve.app/Contents/Libraries/Fusion/fusionscript.so"
+		#lib_path = "/Applications/DaVinci Resolve/DaVinci Resolve.app/Contents/Libraries/Fusion/fusionscript.so"
 		#lib_path = "/Applications/Blackmagic Fusion 21/Fusion.app/Contents/Libraries/fusionscript.so"
 		#lib_path = /Applications/Blackmagic Fusion 21 Render Node/Fusion Render Node.app/Contents/Libraries/fusionscript.so
 	elif sys.platform.startswith("win"):
-		lib_path = "C:\\Program Files\\Blackmagic Design\\DaVinci Resolve\\fusionscript.dll"
+		lib_path = "C:\\Program Files\\Blackmagic Design\\DaVinci Resolve 21\\fusionscript.dll"
+		#lib_path = "C:\\Program Files\\Blackmagic Design\\DaVinci Resolve\\fusionscript.dll"
 		#lib_path = "C:\\Program Files\\Blackmagic Design\\Fusion 21\\fusionscript.dll"
 		#lib_path = "C:\\Program Files\\Blackmagic Design\\Fusion Render Node 21\\fusionscript.dll"
 	elif sys.platform.startswith("linux"):
